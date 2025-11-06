@@ -1,0 +1,126 @@
+:root{
+  --bg: #0b1220;
+  --bg-soft: #0f172a;
+  --surface: #111827;
+  --surface-2: #0b1220;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --primary: #60a5fa;
+  --primary-600:#3b82f6;
+  --ring: #93c5fd66;
+  --ok: #22c55e;
+  --warn: #f59e0b;
+  --danger:#ef4444;
+  --tag-bg: #1f2937;
+}
+
+:root.light{
+  --bg: #ffffff;
+  --bg-soft: #f8fafc;
+  --surface: #ffffff;
+  --surface-2: #f1f5f9;
+  --text: #0f172a;
+  --muted: #475569;
+  --primary: #2563eb;
+  --primary-600:#1d4ed8;
+  --ring: #2563eb33;
+  --ok: #16a34a;
+  --warn: #d97706;
+  --danger:#dc2626;
+  --tag-bg: #eef2ff;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+html{scroll-behavior:smooth}
+body{
+  margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+  background: radial-gradient(1200px 800px at 20% -10%, #1e293b 0%, transparent 60%), var(--bg);
+  color:var(--text);
+}
+
+.parallax{position:fixed; inset:0; overflow:hidden; pointer-events:none;}
+.parallax__layer{position:absolute; inset:0; background-repeat:no-repeat; background-size:cover; opacity:.15}
+.parallax__layer--back{background-image:radial-gradient(900px 700px at 80% 10%, #0ea5e9 0%, transparent 60%)}
+.parallax__layer--mid{background-image:radial-gradient(700px 500px at 20% 60%, #22c55e 0%, transparent 60%)}
+.parallax__layer--front{background-image:radial-gradient(600px 400px at 80% 80%, #f59e0b 0%, transparent 60%)}
+
+.app-header{position:sticky; top:0; z-index:20; background:color-mix(in oklab, var(--bg-soft), transparent 5%); backdrop-filter:saturate(140%) blur(8px); border-bottom:1px solid #ffffff12}
+.header__inner{display:grid; grid-template-columns: 1fr auto auto; align-items:center; gap:1rem; max-width:1200px; margin-inline:auto; padding:1rem}
+.app-title{margin:0; font-weight:800; letter-spacing:.5px}
+.app-nav{display:flex; gap:.5rem; flex-wrap:wrap}
+.nav-btn{background:var(--surface); color:var(--text); border:1px solid #ffffff1a; padding:.5rem .9rem; border-radius:.7rem; cursor:pointer; transition:transform .12s ease, background .2s;}
+.nav-btn[aria-pressed="true"]{outline:2px solid var(--ring); background:color-mix(in oklab, var(--surface), var(--primary) 10%)}
+.nav-btn:hover{transform:translateY(-1px)}
+.header__actions{display:flex; gap:.5rem; align-items:center}
+.icon-btn{display:inline-grid; place-items:center; width:40px; height:40px; border-radius:.7rem; background:var(--surface); border:1px solid #ffffff1a; cursor:pointer}
+.btn{background:var(--surface); color:var(--text); border:1px solid #ffffff1a; padding:.55rem .95rem; border-radius:.7rem; cursor:pointer}
+.btn--primary{background:linear-gradient(180deg, var(--primary), var(--primary-600)); color:white; border:none}
+.btn:focus-visible, .icon-btn:focus-visible, .nav-btn:focus-visible{outline:3px solid var(--ring); outline-offset:2px}
+.menu{position:absolute; margin-top:.25rem; background:var(--surface); border:1px solid #ffffff1a; border-radius:.6rem; padding:.25rem; display:none}
+.menu[aria-expanded="true"], .menu.show{display:block}
+.menu > button{display:block; width:100%; text-align:right; background:transparent; border:none; color:var(--text); padding:.5rem .75rem; cursor:pointer; border-radius:.5rem}
+.menu > button:hover{background:color-mix(in oklab, var(--surface), var(--primary) 12%)}
+
+.app-main{max-width:1200px; margin-inline:auto; padding:1rem; display:grid; gap:1rem}
+.controls{display:grid; gap:1rem; background:color-mix(in oklab, var(--surface), transparent 10%); border:1px solid #ffffff12; border-radius:1rem; padding:1rem}
+.task-form{display:grid; gap:.75rem; grid-template-columns: repeat(6, minmax(0, 1fr));}
+.task-form label{display:flex; flex-direction:column; gap:.35rem}
+.task-form input[type="text"], .task-form input[type="date"], .task-form select{background:var(--surface-2); color:var(--text); border:1px solid #ffffff1a; padding:.6rem .75rem; border-radius:.6rem}
+.task-form .tags-input{grid-column: span 2}
+.task-form #taskTitle{grid-column: span 2}
+.task-form #taskDesc{grid-column: span 2}
+.task-form button{grid-column: span 1}
+
+.filters{display:flex; gap:.75rem; flex-wrap:wrap; align-items:end}
+.filters label{display:flex; flex-direction:column; gap:.35rem}
+.search input{min-width:260px}
+
+.list-wrap{position:relative; background:color-mix(in oklab, var(--surface), transparent 10%); border:1px solid #ffffff12; border-radius:1rem; padding:1rem}
+.task-list{margin:0; padding:0; list-style:none; display:grid; gap:.75rem}
+.task{display:grid; grid-template-columns: auto 1fr auto; gap:.75rem; align-items:center; background:var(--surface); border:1px solid #ffffff1a; border-radius:.9rem; padding:.75rem; transition:transform .15s ease, background .2s}
+.task[draggable="true"]{cursor:grab}
+.task:active{cursor:grabbing}
+.task:hover{transform:translateY(-1px)}
+.task__status{display:grid; place-items:center}
+.checkbox{inline-size:1.15rem; block-size:1.15rem}
+.task__content{display:grid; gap:.35rem}
+.task__title{margin:0; font-size:1.05rem}
+.task__meta{display:flex; gap:.5rem; flex-wrap:wrap; align-items:center; font-size:.85rem; color:var(--muted)}
+.badge{display:inline-flex; align-items:center; gap:.35rem; padding:.2rem .5rem; border-radius:.6rem; background:var(--tag-bg); border:1px solid #ffffff0d}
+.badge--danger{background:color-mix(in oklab, var(--danger), black 80%); color:#fee2e2; border-color:#fecaca33}
+.badge--warn{background:color-mix(in oklab, var(--warn), black 80%); color:#ffedd5; border-color:#fed7aa33}
+.badge--ok{background:color-mix(in oklab, var(--ok), black 80%); color:#dcfce7; border-color:#bbf7d033}
+.tag{border:1px solid #ffffff22}
+.task__actions{display:flex; gap:.35rem}
+.icon{width:20px; height:20px}
+.action{background:transparent; color:var(--text); border:1px solid #ffffff1a; padding:.4rem .55rem; border-radius:.6rem; cursor:pointer}
+.action--danger{border-color:color-mix(in oklab, var(--danger), white 10%); color:#fecaca}
+
+.toast-container{position:fixed; inset-inline:0 0; inset-block:1rem auto; display:grid; gap:.5rem; place-items:center; z-index:50}
+.toast{background:var(--surface); color:var(--text); border:1px solid #ffffff1a; padding:.7rem 1rem; border-radius:.7rem; box-shadow:0 10px 30px #00000044; animation:slideIn .3s ease}
+@keyframes slideIn{from{transform:translateY(-10px); opacity:0} to{transform:none; opacity:1}}
+
+.stats-grid{display:grid; grid-template-columns: 1fr; gap:1rem}
+.pomodoro{display:grid; gap:1rem; background:color-mix(in oklab, var(--surface), transparent 10%); border:1px solid #ffffff12; border-radius:1rem; padding:1rem;}
+.timer{font-size:3rem; font-weight:800; text-align:center}
+.timer-controls{display:flex; gap:.5rem; justify-content:center}
+.session-log{min-height:1.25rem; text-align:center; color:var(--muted)}
+
+.skeleton-list{display:grid; gap:.75rem}
+.skeleton-item{height:64px; border-radius:.9rem; background:linear-gradient(90deg, #ffffff08, #ffffff15, #ffffff08); background-size: 200% 100%; animation: shimmer 1.2s infinite}
+@keyframes shimmer{0%{background-position:200% 0} 100%{background-position:-200% 0}}
+
+.app-footer{color:var(--muted); text-align:center; padding:2rem 1rem}
+
+.muted{color:var(--muted)}
+.sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+
+@media (max-width: 900px){
+  .task-form{grid-template-columns: repeat(2, minmax(0, 1fr));}
+  .task-form #taskTitle, .task-form #taskDesc, .task-form .tags-input{grid-column: span 2}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important; transition:none !important}
+}

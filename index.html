@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>???? ????? ??????</title>
+    <meta name="description" content="???? ????? ???? ?????? ?????? ?????? ???? ??? ???" />
+
+    <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/styles.css" as="style" />
+    <link rel="stylesheet" href="/styles.css" />
+
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+
+    <!-- Accessible fonts: system stack to avoid huge downloads -->
+  </head>
+
+  <body>
+    <div class="parallax" aria-hidden="true">
+      <div class="parallax__layer parallax__layer--back"></div>
+      <div class="parallax__layer parallax__layer--mid"></div>
+      <div class="parallax__layer parallax__layer--front"></div>
+    </div>
+
+    <header class="app-header" role="banner">
+      <div class="header__inner">
+        <h1 class="app-title">?????</h1>
+        <nav class="app-nav" aria-label="?????? ???????">
+          <button id="navTasks" class="nav-btn" aria-pressed="true">??????</button>
+          <button id="navStats" class="nav-btn" data-lazy-module="/js/charts.js">??????????</button>
+          <button id="navFocus" class="nav-btn" data-lazy-module="/js/pomodoro.js">???????</button>
+        </nav>
+        <div class="header__actions">
+          <button id="themeToggle" class="icon-btn" aria-label="????? ?????" title="????? ??????/???????">
+            <span aria-hidden="true">??</span>
+          </button>
+          <button id="exportBtn" class="btn" aria-haspopup="menu" aria-expanded="false">?????</button>
+          <div id="exportMenu" class="menu" role="menu" aria-labelledby="exportBtn">
+            <button role="menuitem" data-export="json">JSON</button>
+            <button role="menuitem" data-export="csv">CSV</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="main" class="app-main" role="main">
+      <section id="viewTasks" class="view view--active" aria-labelledby="tasksHeading">
+        <h2 id="tasksHeading" class="sr-only">????? ??????</h2>
+
+        <section class="controls" aria-label="????? ????? ??????">
+          <form id="taskForm" class="task-form" autocomplete="off">
+            <label>
+              <span>??????</span>
+              <input id="taskTitle" name="title" type="text" required maxlength="120" placeholder="??? ???? ?????" />
+            </label>
+            <label>
+              <span>?????</span>
+              <input id="taskDesc" name="description" type="text" maxlength="300" placeholder="??? ????? (???????)" />
+            </label>
+            <label>
+              <span>????????</span>
+              <select id="taskPriority" name="priority">
+                <option value="low">??????</option>
+                <option value="medium" selected>??????</option>
+                <option value="high">??????</option>
+              </select>
+            </label>
+            <label>
+              <span>????? ?????????</span>
+              <input id="taskDue" name="due" type="date" />
+            </label>
+            <label class="tags-input">
+              <span>????</span>
+              <input id="taskTags" name="tags" type="text" placeholder="????: ???, ????" />
+              <input id="tagColor" name="tagColor" type="color" value="#3b82f6" aria-label="??? ?????" />
+            </label>
+            <button type="submit" class="btn btn--primary">?????</button>
+          </form>
+
+          <div class="filters" role="group" aria-label="????? ???????">
+            <label>
+              <span>??????</span>
+              <select id="filterStatus">
+                <option value="all" selected>????</option>
+                <option value="todo">??? ???????</option>
+                <option value="done">?????</option>
+              </select>
+            </label>
+            <label>
+              <span>????????</span>
+              <select id="filterPriority">
+                <option value="all" selected>????</option>
+                <option value="high">??????</option>
+                <option value="medium">??????</option>
+                <option value="low">??????</option>
+              </select>
+            </label>
+            <label>
+              <span>???????</span>
+              <select id="filterDate">
+                <option value="all" selected>????</option>
+                <option value="today">?????</option>
+                <option value="week">??? ???????</option>
+                <option value="overdue">??????</option>
+              </select>
+            </label>
+            <label class="search">
+              <span>???</span>
+              <input id="searchInput" type="search" placeholder="???? ?? ???????? ??????" />
+            </label>
+          </div>
+        </section>
+
+        <section class="list-wrap" aria-live="polite" aria-busy="true">
+          <div id="skeleton" class="skeleton-list" aria-hidden="true"></div>
+          <ol id="taskList" class="task-list" role="list" aria-describedby="dragHelp"></ol>
+          <p id="dragHelp" class="muted">????? ??? ?????? ?????? ?????? ???????. ????? ????????: ?????? ?????? ?????? ?? Alt.</p>
+        </section>
+      </section>
+
+      <section id="viewStats" class="view" aria-labelledby="statsHeading" hidden>
+        <h2 id="statsHeading">??????????</h2>
+        <div class="stats-grid">
+          <canvas id="chartCompletion" width="600" height="320" aria-label="???? ???????" role="img"></canvas>
+          <canvas id="chartTags" width="600" height="320" aria-label="???? ??????" role="img"></canvas>
+        </div>
+      </section>
+
+      <section id="viewFocus" class="view" aria-labelledby="focusHeading" hidden>
+        <h2 id="focusHeading">??? ???????</h2>
+        <div class="pomodoro">
+          <div class="timer" aria-live="polite">
+            <span id="timerMinutes">25</span><span>:</span><span id="timerSeconds">00</span>
+          </div>
+          <div class="timer-controls" role="group" aria-label="????? ??????">
+            <button id="startTimer" class="btn btn--primary">???</button>
+            <button id="pauseTimer" class="btn">????? ????</button>
+            <button id="resetTimer" class="btn">?????</button>
+            <select id="timerMode" aria-label="?????">
+              <option value="pomodoro" selected>???????? (25)</option>
+              <option value="short" >??????? ????? (5)</option>
+              <option value="long" >??????? ????? (15)</option>
+            </select>
+          </div>
+          <div class="session-log" aria-live="polite"></div>
+        </div>
+      </section>
+    </main>
+
+    <aside id="toastContainer" class="toast-container" aria-live="assertive" aria-atomic="true"></aside>
+
+    <footer class="app-footer" role="contentinfo">
+      <small>? <span id="year"></span> ???? ????? ??????</small>
+    </footer>
+
+    <script type="module" src="/js/app.js"></script>
+  </body>
+</html>
